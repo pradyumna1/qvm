@@ -47,6 +47,9 @@
    #:quantum-operator                   ; TYPE
    #:quantum-state                      ; TYPE
    #:octets-required-for-qubits         ; FUNCTION
+   #:wf                                 ; FUNCTION
+   #:make-matrix                        ; FUNCTION
+   #:magicl-matrix-to-quantum-operator  ; FUNCTION
    )
 
   ;; qam.lisp

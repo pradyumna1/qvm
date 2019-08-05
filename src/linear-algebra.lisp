@@ -23,18 +23,28 @@
   "A representation of an operator on a quantum state. This will be a unitary square matrix where each dimension is a power-of-two."
   `(simple-array cflonum (,n ,n)))
 
+;;; This is intended to be a shorthand for testing.
+(defun wf (&rest elts)
+  "Construyct a wavefunction from the elements ELTS."
+  (declare (dynamic-extent elts))
+  (loop :with psi := (make-lisp-cflonum-vector (length elts))
+        :for i :from 0
+        :for elt :in elts
+        :do (setf (aref psi i) (cflonum elt))
+        :finally (return psi)))
+
 (declaim (ftype (function (fixnum &rest number) quantum-operator) make-matrix))
 (defun make-matrix (size &rest elements)
   "Make a SIZE x SIZE complex matrix whose elements are ELEMENTS. Each of ELEMENTS must be able to be coerced into a CFLONUM."
   (declare (dynamic-extent elements))
-  (let ((matrix (make-array (list size size)
-                            :element-type 'cflonum
-                            :initial-element (cflonum 0))))
-    (loop :for i :from 0
-          :for raw-element :in elements
-          :for element :of-type cflonum := (cflonum raw-element)
-          :do (setf (row-major-aref matrix i) element)
-          :finally (return matrix))))
+  (loop :with matrix := (make-array (list size size)
+                                    :element-type 'cflonum
+                                    :initial-element (cflonum 0))
+        :for i :from 0
+        :for raw-element :in elements
+        :for element :of-type cflonum := (cflonum raw-element)
+        :do (setf (row-major-aref matrix i) element)
+        :finally (return matrix)))
 
 (defun magicl-matrix-to-quantum-operator (m)
   "Convert a MAGICL matrix M to a QUANTUM-OPERATOR."

@@ -64,6 +64,11 @@ ELT will be bound to the element itself."
              :do (progn
                    ,@body)))))
 
+(declaim (inline nat-tuple-position))
+(defun nat-tuple-position (nt elt)
+  "In what position is ELT in the nat-tuple NT?"
+  (position elt nt))
+
 (defun nat-tuple-complement (n nt)
   "Compute the complement of the nat tuple NT in a universe of (0 1 2 ... N-1)."
   (let* ((nt-len (nat-tuple-cardinality nt))
